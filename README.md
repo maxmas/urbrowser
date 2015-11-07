@@ -1,13 +1,20 @@
 Kule urBrowser
 =============
+version: 2.151107
+
 這是用來偵測使用者的作業系統、裝置以及瀏覽器資訊，並記錄於html標籤上。例如：
 ```html
 <html lang="en-US" id="mac" class="chrome chrome46 webkit" data-device="desktop" data-device-type="desktop" data-device-sim="desktop" data-browser-name="chrome" data-browser-version="46" data-os-name="mac" data-doc-size="screen-md" data-screen-size="screen-md" data-orientation="portrait" data-doc-width="1080" data-screen-width="1080" data-layout-mode="desktop" data-urbrowser="true">
 ```
 
 ##使用方式
+你可以[下載檔案](http://urbrowser.kule.tw/js/kule.urbrowser.min.js)
 ```html
 <script type="text/javascript" src="path/to/kule.urbrowser.min.js"></script>
+```
+或是使用 CDN:
+```html
+<script src="https://cdnjs.cloudflare.com/ajax/libs/kule.lazy/3.0.1106beta/js/kule.urbrowser.min.js"></script>
 ```
 
 當網頁讀取時就會自動開始執行，並且將使用者的瀏覽器、作業系統、平台等等資訊記錄下來並置放於上`<html>`上。例如：
@@ -150,6 +157,20 @@ class 會記錄使用者的瀏覽器與核心甚至包含版本，記錄瀏覽�
 }
 ```
 
+###Cordova
+當使用 Cordova 時，在某些情況下可能只需要針對 Cordova 處理某些操作或是修正，因此如果你有使用 Cordova 時，可在 User Agent 加上以下字串：
+
+1. iOS: Cordova-iOS
+2. Android: Cordova-Android
+
+在 html 標籤上就會顯示以下資訊 (inapp 這個class是為了將來能夠共同處理 webapp 而新增。)：
+```html
+<html class="cordova-ios cordova webkit inapp">
+```
+```html
+<html class="cordova-adr cordova webkit inapp">
+```
+
 ###使用者的裝置
 使用者的裝置類型分為Desktop以及Mobile兩種，以便針對不同裝置去處理Hack或是不同的設計，例如：
 ```html
@@ -211,13 +232,13 @@ phone => screen-xs, tablet=> screen-sm, desktop => screen-md, Large Desktops => 
 ```
 
 ###Layout Mode
-無論使用 RWD 或是 AWD 時，可以要分辨現在是使用哪一種設計版型。判斷規則為：如果是行動裝置並且視窗寬度小於 992px，那個會歸類在 Mobile Layout，反之則歸類於 Desktop Layout。在 Cookie 上則會提供 layout: isDesktopLayout 或是 isMobileLayout。
+無論使用 RWD 或是 AWD 時，可以要分辨現在是使用哪一種設計版型。判斷規則為：如果是行動裝置並且視窗寬度小於 992px，會歸類在 Mobile Layout，反之則歸類於 Desktop Layout。在 Cookie 上則會提供 layout: isDesktopLayout 或是 isMobileLayout。
 ```html
 <html data-layout-mode="desktop">
 ```
 
 ###Cookie
-urBrowser 會將 data-device 的資訊記錄到 Cookie 上，以便後端可以使用。
+urBrowser 會將以上部分資訊記錄到 Cookie 上，以便後端或是其他用途使用。
 ```javascript
 urbrowser={"device":"desktop","deviceType":"desktop","screenWidth":1080,"breakpoint":"screen-md","orientation":"portrait", "layout": "isDesktopLayout"}
 ```
@@ -228,11 +249,11 @@ urbrowser={"device":"desktop","deviceType":"desktop","screenWidth":1080,"breakpo
     $urbrowser = json_decode($_COOKIE['urbrowser']);
     $layout = $urbrowser->layout;
 
-    if ($layout == 'isDesktopLayout') {
+    if ($layout == 'desktop') {
         //dosomething...
     }
 
-    if ($layout == 'isMobileLayout') {
+    if ($layout == 'mobile') {
         //dosomething...
     }
 ?>
@@ -252,6 +273,6 @@ object(stdClass)#1 (6) {
   ["orientation"]=>
   string(8) "portrait"
   ["layout"]=>
-  string(15) "isDesktopLayout"
+  string(7) "desktop"
 }
 ```
