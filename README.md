@@ -1,25 +1,25 @@
 Kule urBrowser
 =============
-version: 2.151107
+version: 2.151108
 
 這是用來偵測使用者的作業系統、裝置以及瀏覽器資訊，並記錄於html標籤上。例如：
 ```html
-<html lang="en-US" id="mac" class="chrome chrome46 webkit" data-device="desktop" data-device-type="desktop" data-device-sim="desktop" data-browser-name="chrome" data-browser-version="46" data-os-name="mac" data-doc-size="screen-md" data-screen-size="screen-md" data-orientation="portrait" data-doc-width="1080" data-screen-width="1080" data-layout-mode="desktop" data-urbrowser="true">
+<html lang="en-US" id="mac" class="chrome chrome46 webkit" data-device="desktop" data-device-type="desktop" data-device-sim="desktop" data-browser-name="chrome" data-browser-version="46" data-os-name="mac" data-doc-size="screen-md" data-screen-size="screen-md" data-orientation="portrait" data-doc-width="1080" data-screen-width="1080" data-layout-mode="desktop" data-inapp="false" data-urbrowser="true" >
 ```
 
 ##使用方式
-你可以[下載檔案](http://urbrowser.kule.tw/js/kule.urbrowser.min.js)
+你可以[下載檔案 (ver. 2.151108)](http://urbrowser.kule.tw/js/kule.urbrowser.min.js)
 ```html
 <script type="text/javascript" src="path/to/kule.urbrowser.min.js"></script>
 ```
-或是使用 CDN:
+或是使用 CDN (ver. 2.151105):
 ```html
 <script src="https://cdnjs.cloudflare.com/ajax/libs/kule.lazy/3.0.1106beta/js/kule.urbrowser.min.js"></script>
 ```
 
 當網頁讀取時就會自動開始執行，並且將使用者的瀏覽器、作業系統、平台等等資訊記錄下來並置放於上`<html>`上。例如：
 ```html
-<html lang="en-US" id="mac" class="chrome chrome46 webkit" data-device="desktop" data-device-type="desktop" data-device-sim="desktop" data-browser-name="chrome" data-browser-version="46" data-os-name="mac" data-doc-size="screen-md" data-screen-size="screen-md" data-orientation="portrait" data-doc-width="1080" data-screen-width="1080" data-layout-mode="desktop" data-urbrowser="true">
+<html lang="en-US" id="mac" class="chrome chrome46 webkit" data-device="desktop" data-device-type="desktop" data-device-sim="desktop" data-browser-name="chrome" data-browser-version="46" data-os-name="mac" data-doc-size="screen-md" data-screen-size="screen-md" data-orientation="portrait" data-doc-width="1080" data-screen-width="1080" data-layout-mode="desktop" data-inapp="false" data-urbrowser="true" >
 ```
 
 ###使用者的作業系統或平台
@@ -47,7 +47,7 @@ id 會記錄使用者的作業系統或平台，偶爾會發生在不同平台�
 ###使用者的瀏覽器與核心
 class 會記錄使用者的瀏覽器與核心甚至包含版本，記錄瀏覽器核心是為了在相同核心的瀏覽器發生問題時，可以一次處理，例如Chrome, Safari, 新版的Opera 都是使用 Webkit。記錄版本是為了 萬惡的IE瀏覽器，例如：
 ```html
-<html class="ie ie6">
+<html class="ie6 ie">
 ```
 
 在CSS Hack上就可以寫：
@@ -171,6 +171,9 @@ class 會記錄使用者的瀏覽器與核心甚至包含版本，記錄瀏覽�
 <html class="cordova-adr cordova webkit inapp">
 ```
 
+如果不是上述情況時，`data-inapp` 則顯示為 `false`。
+
+
 ###使用者的裝置
 使用者的裝置類型分為Desktop以及Mobile兩種，以便針對不同裝置去處理Hack或是不同的設計，例如：
 ```html
@@ -232,7 +235,7 @@ phone => screen-xs, tablet=> screen-sm, desktop => screen-md, Large Desktops => 
 ```
 
 ###Layout Mode
-無論使用 RWD 或是 AWD 時，可以要分辨現在是使用哪一種設計版型。判斷規則為：如果是行動裝置並且視窗寬度小於 992px，會歸類在 Mobile Layout，反之則歸類於 Desktop Layout。在 Cookie 上則會提供 layout: isDesktopLayout 或是 isMobileLayout。
+無論使用 RWD 或是 AWD 時，可以要分辨現在是使用哪一種設計版型。判斷規則為：如果是行動裝置並且視窗寬度小於 992px，會歸類在 Mobile Layout，反之則歸類於 Desktop Layout。
 ```html
 <html data-layout-mode="desktop">
 ```
@@ -240,7 +243,7 @@ phone => screen-xs, tablet=> screen-sm, desktop => screen-md, Large Desktops => 
 ###Cookie
 urBrowser 會將以上部分資訊記錄到 Cookie 上，以便後端或是其他用途使用。
 ```javascript
-urbrowser={"device":"desktop","deviceType":"desktop","screenWidth":1080,"breakpoint":"screen-md","orientation":"portrait", "layout": "isDesktopLayout"}
+urbrowser={"device":"desktop","deviceType":"desktop","screenWidth":1080,"breakpoint":"screen-md","orientation":"portrait", "layout": "desktop", "inApp": "false"}
 ```
 
 當後端要使用時，以PHP為例：
@@ -261,7 +264,7 @@ urbrowser={"device":"desktop","deviceType":"desktop","screenWidth":1080,"breakpo
 
 以下為 PHP var_dump 之後出來的結果：
 ```
-object(stdClass)#1 (6) {
+object(stdClass)#1 (7) {
   ["device"]=>
   string(7) "desktop"
   ["deviceType"]=>
@@ -274,5 +277,7 @@ object(stdClass)#1 (6) {
   string(8) "portrait"
   ["layout"]=>
   string(7) "desktop"
+  ["inApp"]=>
+  bool(false)
 }
 ```
