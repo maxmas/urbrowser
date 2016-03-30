@@ -1,6 +1,6 @@
 Kule urBrowser
 =============
-version: 2.151206
+version: 3.160331
 
 這是用來偵測使用者的作業系統、裝置以及瀏覽器資訊，並記錄於html標籤上。例如：
 ```html
@@ -8,13 +8,13 @@ version: 2.151206
 ```
 
 ##使用方式
-你可以[下載檔案 (ver. 2.151206)](http://urbrowser.kule.tw/js/kule.urbrowser.min.js)
+你可以[下載檔案 (ver. 3.160331)](http://urbrowser.kule.tw/js/kule.urbrowser.min.js)
 ```html
 <script type="text/javascript" src="path/to/kule.urbrowser.min.js"></script>
 ```
-或是使用 CDN (ver. 2.151124):
+或是使用 CDN (ver. 2.151206):
 ```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/kule.lazy/3.0.151206/js/kule.urbrowser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/kule.lazy/3.1.160123/js/kule.urbrowser.min.js"></script>
 ```
 
 當網頁讀取時就會自動開始執行，並且將使用者的瀏覽器、作業系統、平台等等資訊記錄下來並置放於上`<html>`上。例如：
@@ -197,27 +197,27 @@ data-screen-width 的值是直接取得 document 的寬度值，根據這個寬�
 phone => screen-xs, tablet=> screen-sm, desktop => screen-md, Large Desktops => screen-lg
 
 ```html
-<html data-screen-width="1920" data-device-sim="desktop" data-screen-size="screen-lg">
+<html data-screen-range="screen-lg">
 ```
 ```html
-<html data-screen-width="1080" data-device-sim="desktop" data-screen-size="screen-md">
+<html data-screen-range="screen-md">
 ```
 ```html
-<html data-screen-width="768" data-device-sim="tablet" data-screen-size="screen-sm">
+<html data-screen-range="screen-sm">
 ```
 ```html
-<html data-screen-width="480" data-device-sim="phone" data-screen-size="screen-xs">
+<html data-screen-range="screen-xs">
 ```
 
 ###裝置的寬度以及橫式或直式的處理
 如果在行動裝置上會直接依據 window.orientation 回傳結果來判斷是portrait或是landscape，如果是電腦裝置則是計算寬與高的關係來模擬是portrait或是landscape，當直式畫面時顯示以下內容：
 ```html
-<html data-orientation="portrait" data-doc-width="320">
+<html data-orientation="portrait">
 ```
 
 如果是橫式時則會顯示：
 ```html
-<html data-orientation="landscape" data-doc-width="768">
+<html data-orientation="landscape">
 ```
 
 ###瀏覽器名稱與版本號碼
@@ -225,13 +225,10 @@ phone => screen-xs, tablet=> screen-sm, desktop => screen-md, Large Desktops => 
 <html data-browser-name="chrome" data-browser-version="46">
 ```
 
-###Desktop 與 Windows 版本
-當使用桌上型或筆記型電腦時，會記錄使用者的系統名稱，當使用者使用的是Windows系統時，會記錄該系統的版本號碼。
+###OS 名稱與版本
+記錄使用者裝置的系統名稱與版本號碼。
 ```html
-<html data-os-name="windows" data-os-version="95">
-```
-```html
-<html data-os-name="windows nt" data-os-version="6.2">
+<html data-os-name="mac" data-os-version="10.10.5">
 ```
 
 ###Layout Mode
@@ -243,14 +240,14 @@ phone => screen-xs, tablet=> screen-sm, desktop => screen-md, Large Desktops => 
 ###Cookie
 urBrowser 會將以上部分資訊記錄到 Cookie 上，以便後端或是其他用途使用。
 ```javascript
-urbrowser={"device":"desktop","deviceType":"desktop","screenWidth":1080,"breakpoint":"screen-md","orientation":"portrait", "layout": "desktop", "inApp": "false"}
+urbrowser={"lang":"en-US","id":"mac","class":"chrome chrome49 webkit","data":{"device":"desktop","device-type":"desktop","device-sim":"desktop","browser-name":"chrome","browser-version":"49.0.2623.108","os-name":"mac","os-version":"10.10.5","screen-range":"screen-md","doc-range":"screen-md","orientation":"portrait","layout-mode":"desktop","inapp":false,"urb-version":"3.160330"},"size":{"width":1080,"height":1920}}
 ```
 
 當後端要使用時，以PHP為例：
 ```php
 <?php
     $urbrowser = json_decode($_COOKIE['urbrowser']);
-    $layout = $urbrowser->layout;
+    $layout = $urbrowser->data->{'layout-mode'};
 
     if ($layout == 'desktop') {
         //dosomething...
@@ -264,20 +261,48 @@ urbrowser={"device":"desktop","deviceType":"desktop","screenWidth":1080,"breakpo
 
 以下為 PHP var_dump 之後出來的結果：
 ```
-object(stdClass)#1 (7) {
-  ["device"]=>
-  string(7) "desktop"
-  ["deviceType"]=>
-  string(7) "desktop"
-  ["screenWidth"]=>
-  int(1080)
-  ["breakpoint"]=>
-  string(9) "screen-md"
-  ["orientation"]=>
-  string(8) "portrait"
-  ["layout"]=>
-  string(7) "desktop"
-  ["inApp"]=>
-  bool(false)
+object(stdClass)#1 (5) {
+  ["lang"]=>
+  string(5) "en-US"
+  ["id"]=>
+  string(3) "mac"
+  ["class"]=>
+  string(22) "chrome chrome49 webkit"
+  ["data"]=>
+  object(stdClass)#2 (13) {
+    ["device"]=>
+    string(7) "desktop"
+    ["device-type"]=>
+    string(7) "desktop"
+    ["device-sim"]=>
+    string(7) "desktop"
+    ["browser-name"]=>
+    string(6) "chrome"
+    ["browser-version"]=>
+    string(13) "49.0.2623.108"
+    ["os-name"]=>
+    string(3) "mac"
+    ["os-version"]=>
+    string(7) "10.10.5"
+    ["screen-range"]=>
+    string(9) "screen-md"
+    ["doc-range"]=>
+    string(9) "screen-md"
+    ["orientation"]=>
+    string(8) "portrait"
+    ["layout-mode"]=>
+    string(7) "desktop"
+    ["inapp"]=>
+    bool(false)
+    ["urb-version"]=>
+    string(8) "3.160330"
+  }
+  ["size"]=>
+  object(stdClass)#3 (2) {
+    ["width"]=>
+    int(1080)
+    ["height"]=>
+    int(1920)
+  }
 }
 ```
