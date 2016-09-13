@@ -1,20 +1,20 @@
 Kule urBrowser
 =============
-version: 3.160629
+version: 3.160914
 
 這是用來偵測使用者的作業系統、裝置以及瀏覽器資訊，並記錄於html標籤上。例如：
 ```html
-<html lang="en-US" id="mac" class="chrome chrome46 webkit" data-device="desktop" data-device-type="desktop" data-device-sim="desktop" data-browser-name="chrome" data-browser-version="46" data-os-name="mac" data-doc-size="screen-md" data-screen-size="screen-md" data-orientation="portrait" data-doc-width="1080" data-screen-width="1080" data-layout-mode="desktop" data-inapp="false" data-urbrowser="true" >
+<html lang="en-US" id="mac" class="chrome chrome53 webkit" data-device="desktop" data-device-type="desktop" data-device-sim="desktop" data-browser-name="chrome" data-browser-version="46" data-os-name="mac" data-doc-size="screen-md" data-screen-size="screen-md" data-orientation="portrait" data-doc-width="1080" data-screen-width="1080" data-layout-mode="desktop" data-inapp="false" data-urbrowser="true" >
 ```
 
 ##使用方式
-你可以[下載檔案 (ver. 3.160629)](http://urbrowser.kule.tw/js/kule.urbrowser.min.js)
+你可以[下載檔案 (ver. 3.160914)](http://urbrowser.kule.tw/js/kule.urbrowser.min.js)
 ```html
 <script type="text/javascript" src="path/to/kule.urbrowser.min.js"></script>
 ```
-或是使用 CDN (ver. 3.160629):
+或是使用 CDN (ver. 3.160913):
 ```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/kule.lazy/3.1.160704/js/kule.urbrowser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/kule.lazy/3.1.160913/js/kule.urbrowser.min.js"></script>
 ```
 
 當網頁讀取時就會自動開始執行，並且將使用者的瀏覽器、作業系統、平台等等資訊記錄下來並置放於上`<html>`上。例如：
@@ -157,22 +157,28 @@ class 會記錄使用者的瀏覽器與核心甚至包含版本，記錄瀏覽�
 }
 ```
 
-###Cordova
-當使用 Cordova 時，在某些情況下可能只需要針對 Cordova 處理某些操作或是修正，因此如果你有使用 Cordova 時，可在 User Agent 加上以下字串：
+###Webview
+當使用 Webview 時，在某些情況下可能只需要針對 Webview 處理某些操作或是修正，因此如果你有使用 Webview 時，可在 User Agent 加上以下字串：cordova 或 phonegap 或 react 或 nodejs 或 webview 等字樣，如需分辨 iOS 與 Andoird 可如下表示：
 
-1. iOS: Cordova-iOS
-2. Android: Cordova-Android
+1. iOS: webview-ios
+2. Android: webview-android
 
-在 html 標籤上就會顯示以下資訊 (inapp 這個class是為了將來能夠共同處理 webapp 而新增。)：
+在 html 標籤上就會顯示以下資訊：
 ```html
-<html class="cordova-ios cordova webkit inapp">
+<html class="webview-ios webview webkit" data-webview="ios">
 ```
 ```html
-<html class="cordova-adr cordova webkit inapp">
+<html class="webview-adr webview webkit" data-webview="android">
 ```
 
-如果不是上述情況時，`data-inapp` 則顯示為 `false`。
+如果不是上述情況時，`data-webview` 則顯示為 `false`。
 
+
+###第三方 APP 內建的瀏覽器
+有時使用者會從某些 APP 開啟連結，由 APP 內建的瀏覽器開啟，此時開發者難以知道使用者瀏覽器的版本，因此針對了 Facebook apps, Twitter, Line, Kakaotalk, MicroMessenger(微信) 等 APP 做識別，並且會將該 APP 名稱置入於 class 名稱內，例如：
+```html
+<html class="facebook webkit">
+```
 
 ###使用者的裝置
 使用者的裝置類型分為Desktop以及Mobile兩種，以便針對不同裝置去處理Hack或是不同的設計，例如：
@@ -194,19 +200,19 @@ class 會記錄使用者的瀏覽器與核心甚至包含版本，記錄瀏覽�
 
 開發時為了方便檢視，data-device-sim 模擬現在文件尺寸是接近哪種裝置
 data-screen-width 的值是直接取得 document 的寬度值，根據這個寬度來模擬現在的尺寸是接近哪一種裝置，包含 Phone, Tablet, Desktop，參考來源：[http://www.cutegrids.com/](http://www.cutegrids.com/)，
-phone => screen-xs, tablet=> screen-sm, desktop => screen-md, Large Desktops => screen-lg
+phone => xs, tablet=> sm, desktop => md, Large Desktops => lg
 
 ```html
-<html data-screen-range="screen-lg">
+<html data-screen-range="lg">
 ```
 ```html
-<html data-screen-range="screen-md">
+<html data-screen-range="md">
 ```
 ```html
-<html data-screen-range="screen-sm">
+<html data-screen-range="sm">
 ```
 ```html
-<html data-screen-range="screen-xs">
+<html data-screen-range="xs">
 ```
 
 ###裝置的寬度以及橫式或直式的處理
@@ -222,13 +228,13 @@ phone => screen-xs, tablet=> screen-sm, desktop => screen-md, Large Desktops => 
 
 ###瀏覽器名稱與版本號碼
 ```html
-<html data-browser-name="chrome" data-browser-version="46">
+<html data-browser-name="chrome" data-browser-version="53.0.2785.101">
 ```
 
 ###OS 名稱與版本
 記錄使用者裝置的系統名稱與版本號碼。
 ```html
-<html data-os-name="mac" data-os-version="10.10.5">
+<html data-os-name="mac" data-os-version="10.11.6">
 ```
 
 ###Layout Mode
@@ -240,14 +246,14 @@ phone => screen-xs, tablet=> screen-sm, desktop => screen-md, Large Desktops => 
 ###Cookie
 urBrowser 會將以上部分資訊記錄到 Cookie 上，以便後端或是其他用途使用。
 ```javascript
-urbrowser={"lang":"en-US","id":"mac","class":"chrome chrome49 webkit","data":{"device":"desktop","device-type":"desktop","device-sim":"desktop","browser-name":"chrome","browser-version":"49.0.2623.108","os-name":"mac","os-version":"10.10.5","screen-range":"screen-md","doc-range":"screen-md","orientation":"portrait","layout-mode":"desktop","inapp":false,"urb-version":"3.160330"},"size":{"width":1080,"height":1920}}
+urbrowser={"project":"urBrowser","version":"3.160914","author":"Kei Cheng","srcWidth":1080,"srcHeight":1920,"docWidth":1080,"docHeight":1015,"getNameByAgent":"chrome","getPlatform":"mac","getBrowserWithCoreNames":"chrome chrome53 webkit","getBrowserVersionsByName":{"int":53,"full":"53.0.2785.101"},"getOSName":"mac","getOSVersion":"10.11.6","getBrowserNames":{"name":"chrome","class":"chrome chrome53 webkit"},"getBrowserFullVersion":"53.0.2785.101","getDevices":{"device":"desktop","type":"desktop","sim":"desktop"},"getOrientation":"landscape","getSizeRanges":{"screen":"md","document":"md"},"getLanguage":"en-US","isInApp":false,"isWebView":false,"getLayoutMode":"desktop"}
 ```
 
 當後端要使用時，以PHP為例：
 ```php
 <?php
     $urbrowser = json_decode($_COOKIE['urbrowser']);
-    $layout = $urbrowser->data->{'layout-mode'};
+    $layout = $urbrowser->getLayoutMode;
 
     if ($layout == 'desktop') {
         //dosomething...
@@ -261,48 +267,72 @@ urbrowser={"lang":"en-US","id":"mac","class":"chrome chrome49 webkit","data":{"d
 
 以下為 PHP var_dump 之後出來的結果：
 ```
-object(stdClass)#1 (5) {
-  ["lang"]=>
-  string(5) "en-US"
-  ["id"]=>
+object(stdClass)#1 (22) {
+  ["project"]=>
+  string(9) "urBrowser"
+  ["version"]=>
+  string(8) "3.160914"
+  ["author"]=>
+  string(9) "Kei Cheng"
+  ["srcWidth"]=>
+  int(1080)
+  ["srcHeight"]=>
+  int(1920)
+  ["docWidth"]=>
+  int(1080)
+  ["docHeight"]=>
+  int(1015)
+  ["getNameByAgent"]=>
+  string(6) "chrome"
+  ["getPlatform"]=>
   string(3) "mac"
-  ["class"]=>
-  string(22) "chrome chrome49 webkit"
-  ["data"]=>
-  object(stdClass)#2 (13) {
+  ["getBrowserWithCoreNames"]=>
+  string(22) "chrome chrome53 webkit"
+  ["getBrowserVersionsByName"]=>
+  object(stdClass)#2 (2) {
+    ["int"]=>
+    int(53)
+    ["full"]=>
+    string(13) "53.0.2785.101"
+  }
+  ["getOSName"]=>
+  string(3) "mac"
+  ["getOSVersion"]=>
+  string(7) "10.11.6"
+  ["getBrowserNames"]=>
+  object(stdClass)#3 (2) {
+    ["name"]=>
+    string(6) "chrome"
+    ["class"]=>
+    string(22) "chrome chrome53 webkit"
+  }
+  ["getBrowserFullVersion"]=>
+  string(13) "53.0.2785.101"
+  ["getDevices"]=>
+  object(stdClass)#4 (3) {
     ["device"]=>
     string(7) "desktop"
-    ["device-type"]=>
+    ["type"]=>
     string(7) "desktop"
-    ["device-sim"]=>
+    ["sim"]=>
     string(7) "desktop"
-    ["browser-name"]=>
-    string(6) "chrome"
-    ["browser-version"]=>
-    string(13) "49.0.2623.108"
-    ["os-name"]=>
-    string(3) "mac"
-    ["os-version"]=>
-    string(7) "10.10.5"
-    ["screen-range"]=>
-    string(9) "screen-md"
-    ["doc-range"]=>
-    string(9) "screen-md"
-    ["orientation"]=>
-    string(8) "portrait"
-    ["layout-mode"]=>
-    string(7) "desktop"
-    ["inapp"]=>
-    bool(false)
-    ["urb-version"]=>
-    string(8) "3.160330"
   }
-  ["size"]=>
-  object(stdClass)#3 (2) {
-    ["width"]=>
-    int(1080)
-    ["height"]=>
-    int(1920)
+  ["getOrientation"]=>
+  string(9) "landscape"
+  ["getSizeRanges"]=>
+  object(stdClass)#5 (2) {
+    ["screen"]=>
+    string(2) "md"
+    ["document"]=>
+    string(2) "md"
   }
+  ["getLanguage"]=>
+  string(5) "en-US"
+  ["isInApp"]=>
+  bool(false)
+  ["isWebView"]=>
+  bool(false)
+  ["getLayoutMode"]=>
+  string(7) "desktop"
 }
 ```
