@@ -1,6 +1,6 @@
 Kule urBrowser
 =============
-version: 3.160914
+version: 3.161001
 
 這是用來偵測使用者的作業系統、裝置以及瀏覽器資訊，並記錄於html標籤上。例如：
 ```html
@@ -8,13 +8,13 @@ version: 3.160914
 ```
 
 ##使用方式
-你可以[下載檔案 (ver. 3.160914)](http://urbrowser.kule.tw/js/kule.urbrowser.min.js)
+你可以[下載檔案 (ver. 3.161001)](http://urbrowser.kule.tw/js/kule.urbrowser.min.js)
 ```html
 <script type="text/javascript" src="path/to/kule.urbrowser.min.js"></script>
 ```
-或是使用 CDN (ver. 3.160913):
+或是使用 CDN (ver. 3.160919):
 ```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/kule.lazy/3.1.160913/js/kule.urbrowser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/kule.lazy/3.1.160919/js/kule.urbrowser.min.js"></script>
 ```
 
 當網頁讀取時就會自動開始執行，並且將使用者的瀏覽器、作業系統、平台等等資訊記錄下來並置放於上`<html>`上。例如：
