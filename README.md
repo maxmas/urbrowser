@@ -384,7 +384,7 @@ object(stdClass)#1 (22) {
 
 ### 瀏覽器支援
 
-最後，urBrower 可支援的瀏覽器包含：IE 9+, Edge 12+, Chrome 4+, Firefox 3.5+, Safari 4+, Opera 11.5+。  
+最後，urBrowser 可支援的瀏覽器包含：IE 9+, Edge 12+, Chrome 4+, Firefox 3.5+, Safari 4+, Opera 11.5+。  
 IE 6 至 IE 8 僅顯示瀏覽器資訊於 `<html>`上，但不會將資訊儲存於 Cookie 與 Web Storage。
 
 IE 8 雖然支援 Web Storage，但是正常來說因為製作 RWD 或 AWD 時應該不太會需要支援到 IE 8，所以就放棄了。
